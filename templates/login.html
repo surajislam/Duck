@@ -1,744 +1,182 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="format-detection" content="telephone=no">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="referrer" content="no-referrer">
-    <meta name="theme-color" content="#0D1421">
-    <meta name="msapplication-TileColor" content="#0D1421">
-    <meta name="apple-mobile-web-app-title" content="Telegram Search Pro">
-    <meta name="application-name" content="Telegram Search Pro">
-    <title>Telegram Search Pro - Login & Signup</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #0D1421 0%, #1A2332 25%, #0f172a 50%, #1A2332 75%, #0D1421 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            color: white;
-            position: relative;
-            overflow: hidden;
-        }
-
-        /* Animated Background Elements */
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 25% 25%, rgba(64, 224, 208, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 75% 75%, rgba(255, 107, 107, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 50% 50%, rgba(123, 104, 238, 0.05) 0%, transparent 50%);
-            animation: backgroundFloat 20s ease-in-out infinite;
-            z-index: -2;
-        }
-
-        @keyframes backgroundFloat {
-            0%, 100% { transform: scale(1) rotate(0deg); }
-            50% { transform: scale(1.1) rotate(180deg); }
-        }
-
-        /* Floating Particles */
-        body::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                radial-gradient(2px 2px at 20px 30px, rgba(64, 224, 208, 0.3), transparent),
-                radial-gradient(2px 2px at 40px 70px, rgba(255, 107, 107, 0.3), transparent),
-                radial-gradient(1px 1px at 90px 40px, rgba(123, 104, 238, 0.3), transparent),
-                radial-gradient(1px 1px at 130px 80px, rgba(64, 224, 208, 0.3), transparent);
-            background-repeat: repeat;
-            background-size: 200px 100px;
-            animation: particleFloat 25s linear infinite;
-            z-index: -1;
-            opacity: 0.4;
-        }
-
-        @keyframes particleFloat {
-            from { transform: translateY(0px); }
-            to { transform: translateY(-100px); }
-        }
-
-        .container {
-            background: rgba(13, 20, 33, 0.95);
-            border: 2px solid rgba(64, 224, 208, 0.3);
-            border-radius: 24px;
-            padding: 50px 40px;
-            max-width: 450px;
-            width: 100%;
-            text-align: center;
-            backdrop-filter: blur(20px);
-            box-shadow: 
-                0 25px 60px rgba(0, 0, 0, 0.5),
-                0 0 80px rgba(64, 224, 208, 0.1),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1);
-            position: relative;
-            overflow: hidden;
-            animation: containerFadeIn 1s ease-out;
-        }
-
-        @keyframes containerFadeIn {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(64, 224, 208, 0.1), transparent);
-            animation: shimmer 3s infinite;
-        }
-
-        @keyframes shimmer {
-            0% { left: -100%; }
-            100% { left: 100%; }
-        }
-
-        .logo {
-            font-size: 64px;
-            margin-bottom: 20px;
-            color: #40E0D0;
-            text-shadow: 0 0 30px rgba(64, 224, 208, 0.5);
-            animation: logoGlow 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes logoGlow {
-            from { filter: drop-shadow(0 0 20px rgba(64, 224, 208, 0.5)); }
-            to { filter: drop-shadow(0 0 30px rgba(64, 224, 208, 0.8)); }
-        }
-
-        .title {
-            font-size: 32px;
-            font-weight: 800;
-            background: linear-gradient(135deg, #40E0D0 0%, #48cc8c 50%, #7b68ee 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 10px;
-            text-shadow: 0 0 20px rgba(64, 224, 208, 0.3);
-            animation: titleSlideIn 1s ease-out 0.3s both;
-        }
-
-        @keyframes titleSlideIn {
-            from { opacity: 0; transform: translateX(-30px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-
-        .subtitle {
-            color: #B8C5D6;
-            font-size: 18px;
-            margin-bottom: 40px;
-            font-weight: 400;
-            opacity: 0;
-            animation: subtitleFadeIn 1s ease-out 0.6s both;
-        }
-
-        @keyframes subtitleFadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .auth-tabs {
-            display: flex;
-            margin-bottom: 30px;
-            border-radius: 12px;
-            background: rgba(15, 15, 35, 0.6);
-            padding: 4px;
-        }
-
-        .auth-tab {
-            flex: 1;
-            padding: 12px;
-            background: transparent;
-            border: none;
-            color: #94a3b8;
-            font-weight: 600;
-            cursor: pointer;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .auth-tab.active {
-            background: linear-gradient(135deg, #40e0d0 0%, #48cc8c 100%);
-            color: #0f1419;
-        }
-
-        .input-section {
-            margin-bottom: 35px;
-            text-align: left;
-            opacity: 0;
-            animation: inputFadeIn 1s ease-out 0.9s both;
-        }
-
-        @keyframes inputFadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .input-label {
-            display: flex;
-            align-items: center;
-            color: #40E0D0;
-            font-size: 16px;
-            font-weight: 700;
-            margin-bottom: 15px;
-            gap: 8px;
-        }
-
-        .input-label .icon {
-            font-size: 18px;
-            filter: drop-shadow(0 0 10px rgba(64, 224, 208, 0.3));
-        }
-
-        .form-input {
-            width: 100%;
-            background: rgba(15, 15, 35, 0.8);
-            border: 2px solid rgba(64, 224, 208, 0.3);
-            border-radius: 16px;
-            padding: 18px 24px;
-            color: #ffffff;
-            font-size: 16px;
-            font-weight: 600;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            backdrop-filter: blur(10px);
-            margin-bottom: 20px;
-        }
-
-        .form-input:focus {
-            outline: none;
-            border-color: #40E0D0;
-            box-shadow: 
-                0 0 30px rgba(64, 224, 208, 0.3),
-                inset 0 0 20px rgba(64, 224, 208, 0.1);
-            background: rgba(15, 15, 35, 0.95);
-            transform: translateY(-2px);
-        }
-
-        .form-input::placeholder {
-            color: #64748b;
-            font-style: italic;
-        }
-
-        .hash-code-input {
-            font-family: 'Monaco', 'Menlo', monospace;
-            letter-spacing: 1px;
-        }
-
-        .auth-button {
-            width: 100%;
-            background: linear-gradient(135deg, #40E0D0 0%, #48cc8c 100%);
-            color: #0f1419;
-            border: none;
-            border-radius: 16px;
-            padding: 18px 24px;
-            font-size: 18px;
-            font-weight: 800;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 
-                0 8px 25px rgba(64, 224, 208, 0.3),
-                0 0 20px rgba(64, 224, 208, 0.1);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            position: relative;
-            overflow: hidden;
-            opacity: 0;
-            animation: buttonSlideUp 1s ease-out 1.2s both;
-        }
-
-        @keyframes buttonSlideUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .auth-button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.6s;
-        }
-
-        .auth-button:hover::before {
-            left: 100%;
-        }
-
-        .auth-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 
-                0 12px 35px rgba(64, 224, 208, 0.4),
-                0 0 30px rgba(64, 224, 208, 0.2);
-        }
-
-        .auth-button:active {
-            transform: translateY(-1px);
-        }
-
-        .auth-button:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .message {
-            border-radius: 12px;
-            padding: 15px;
-            margin-top: 20px;
-            font-size: 14px;
-            font-weight: 600;
-            display: none;
-        }
-
-        .error-message {
-            background: rgba(248, 113, 113, 0.2);
-            border: 1px solid rgba(248, 113, 113, 0.4);
-            color: #fecaca;
-            animation: errorShake 0.5s ease-in-out;
-        }
-
-        .success-message {
-            background: rgba(72, 204, 140, 0.2);
-            border: 1px solid rgba(72, 204, 140, 0.4);
-            color: #86efac;
-            animation: successPulse 0.5s ease-in-out;
-        }
-
-        @keyframes errorShake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
-        }
-
-        @keyframes successPulse {
-            0% { transform: scale(0.95); }
-            50% { transform: scale(1.02); }
-            100% { transform: scale(1); }
-        }
-
-        .hash-code-display {
-            background: rgba(64, 224, 208, 0.1);
-            border: 2px solid rgba(64, 224, 208, 0.3);
-            border-radius: 12px;
-            padding: 20px;
-            margin: 20px 0;
-            text-align: center;
-        }
-
-        .hash-code-value {
-            font-family: 'Monaco', 'Menlo', monospace;
-            font-size: 24px;
-            color: #40E0D0;
-            font-weight: 700;
-            letter-spacing: 2px;
-            margin: 10px 0;
-        }
-
-        .hash-code-warning {
-            background: rgba(255, 107, 107, 0.1);
-            border: 1px solid rgba(255, 107, 107, 0.3);
-            border-radius: 8px;
-            padding: 15px;
-            color: #ffcccb;
-            font-size: 13px;
-            margin-top: 15px;
-        }
-
-        .loading-spinner {
-            display: none;
-            width: 20px;
-            height: 20px;
-            border: 2px solid rgba(15, 15, 35, 0.3);
-            border-top: 2px solid #0f1419;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-right: 10px;
-        }
-
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-
-        .contact-info {
-            margin-top: 30px;
-            padding: 20px;
-            background: rgba(15, 15, 35, 0.6);
-            border: 1px solid rgba(64, 224, 208, 0.2);
-            border-radius: 12px;
-            text-align: center;
-        }
-
-        .contact-note {
-            color: #B8C5D6;
-            font-size: 14px;
-            margin-bottom: 12px;
-        }
-
-        .telegram-link {
-            color: #40E0D0;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 16px;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .telegram-link:hover {
-            color: #48cc8c;
-            transform: translateY(-2px);
-        }
-
-        .admin-note {
-            background: rgba(64, 224, 208, 0.05);
-            border: 1px solid rgba(64, 224, 208, 0.15);
-            border-radius: 8px;
-            padding: 12px;
-            margin-top: 10px;
-            font-size: 13px;
-            color: #94a3b8;
-            text-align: center;
-            line-height: 1.4;
-        }
-
-        .admin-note .highlight {
-            color: #40E0D0;
-            font-weight: 600;
-        }
-
-        @media (max-width: 480px) {
-            .container {
-                margin: 15px;
-                padding: 40px 30px;
-                border-radius: 20px;
-            }
-
-            .logo {
-                font-size: 54px;
-            }
-
-            .title {
-                font-size: 26px;
-            }
-
-            .subtitle {
-                font-size: 16px;
-            }
-
-            .form-input {
-                padding: 16px 20px;
-                font-size: 15px;
-            }
-
-            .auth-button {
-                padding: 16px 20px;
-                font-size: 16px;
-            }
-        }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Telegram Search Pro — Login / Signup</title>
+  <style>
+    /* minimal in-file styles (you can move to static later) */
+    body{font-family:Inter,system-ui,Arial;background:#0d1421;color:#e6eef6;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+    .card{width:100%;max-width:460px;background:rgba(13,20,33,.95);border:1px solid rgba(64,224,208,.12);border-radius:16px;padding:32px;box-shadow:0 10px 40px rgba(0,0,0,.6)}
+    h1{margin:0 0 8px;font-size:26px;color:linear-gradient(#40e0d0,#7b68ee)}
+    p.sub{color:#9fb0bd;margin:0 0 18px}
+    .tabs{display:flex;margin-bottom:18px;background:rgba(15,15,35,.6);padding:4px;border-radius:10px}
+    .tab{flex:1;padding:8px 10px;border-radius:8px;background:transparent;color:#9fb0bd;border:none;cursor:pointer;font-weight:600}
+    .tab.active{background:linear-gradient(135deg,#40e0d0,#48cc8c);color:#071217}
+    label{display:block;color:#40e0d0;font-weight:700;margin-bottom:8px;font-size:14px}
+    input[type="text"], input[type="number"]{width:100%;padding:14px;border-radius:12px;border:2px solid rgba(64,224,208,.12);background:rgba(7,10,14,.7);color:#e6eef6;margin-bottom:12px;font-weight:600}
+    button.primary{width:100%;padding:14px;border-radius:12px;border:none;font-weight:800;cursor:pointer;background:linear-gradient(135deg,#40e0d0,#48cc8c);color:#071217}
+    button.ghost{width:100%;padding:10px;border-radius:12px;border:1px solid rgba(64,224,208,.12);background:transparent;color:#9fb0bd;cursor:pointer}
+    .msg{margin-top:12px;padding:12px;border-radius:10px;display:none}
+    .msg.error{background:rgba(248,113,113,.08);color:#ffc7c7;border:1px solid rgba(248,113,113,.12)}
+    .msg.success{background:rgba(72,204,140,.06);color:#bff0d2;border:1px solid rgba(72,204,140,.12)}
+    .hash-box{background:rgba(64,224,208,.06);border:1px solid rgba(64,224,208,.12);padding:12px;border-radius:10px;margin-top:12px;color:#40e0d0;font-family:monospace;font-weight:700;word-break:break-all}
+    .small{font-size:13px;color:#9fb0bd;margin-top:8px}
+  </style>
 </head>
 <body>
-    <div class="container">
-        <div class="logo">🚀</div>
-        
-        <h1 class="title">Telegram Search Pro</h1>
-        <p class="subtitle">Login or Create Account</p>
-        
-        <!-- Auth Tabs -->
-        <div class="auth-tabs">
-            <button class="auth-tab active" onclick="switchTab('login')">Login</button>
-            <button class="auth-tab" onclick="switchTab('signup')">Sign Up</button>
-        </div>
+  <div class="card" role="main">
+    <h1>Telegram Search Pro</h1>
+    <p class="sub">Login with your 12-digit hash code or create an account</p>
 
-        <!-- Login Form -->
-        <div id="loginForm" class="auth-form">
-            <div class="input-section">
-                <label class="input-label">
-                    <span class="icon">🔑</span>
-                    Hash Code
-                </label>
-                <input 
-                    type="text" 
-                    id="loginHashCode" 
-                    class="form-input hash-code-input" 
-                    placeholder="Enter your 12-digit hash code..."
-                    maxlength="12"
-                    autocomplete="off"
-                >
-            </div>
-            
-            <button class="auth-button" onclick="login()">
-                <span class="loading-spinner" id="loginSpinner"></span>
-                <span id="loginButtonText">Login</span>
-            </button>
-        </div>
-
-        <!-- Signup Form -->
-        <div id="signupForm" class="auth-form" style="display: none;">
-            <div class="input-section">
-                <label class="input-label">
-                    <span class="icon">👤</span>
-                    Your Name
-                </label>
-                <input 
-                    type="text" 
-                    id="signupName" 
-                    class="form-input" 
-                    placeholder="Enter your full name..."
-                    autocomplete="off"
-                >
-            </div>
-            
-            <button class="auth-button" onclick="signup()">
-                <span class="loading-spinner" id="signupSpinner"></span>
-                <span id="signupButtonText">Create Account</span>
-            </button>
-        </div>
-        
-        <div class="error-message message" id="errorMessage"></div>
-        <div class="success-message message" id="successMessage"></div>
-        
-        <!-- Hash Code Display (for new signups) -->
-        <div class="hash-code-display" id="hashCodeDisplay" style="display: none;">
-            <div style="color: #40E0D0; font-weight: 700; margin-bottom: 10px;">🎉 Account Created Successfully!</div>
-            <div style="color: #94a3b8; font-size: 14px; margin-bottom: 15px;">Your Hash Code:</div>
-            <div class="hash-code-value" id="hashCodeValue"></div>
-            <div class="hash-code-warning">
-                <strong>⚠️ IMPORTANT:</strong> Save this hash code safely! You'll need it to login next time. We cannot recover it if lost.
-            </div>
-            <button class="auth-button" onclick="proceedToLogin()" style="margin-top: 20px; font-size: 16px;">
-                Continue to Login
-            </button>
-        </div>
-        
-        <!-- Contact Information -->
-        <div class="contact-info">
-            <div class="contact-note">Contact for any issues or queries:</div>
-            <a href="https://t.me/hackingteamx" class="telegram-link" target="_blank">
-                <span>📱</span>
-                t.me/hackingteamx
-            </a>
-            <div class="admin-note" style="margin-top: 15px;">
-                <span class="highlight">Professional Services:</span> Managed by <span class="highlight">@hackingteamx</span> - Your trusted admin for premium Telegram search solutions.
-            </div>
-        </div>
+    <div class="tabs" role="tablist" aria-label="Auth tabs">
+      <button class="tab active" id="tab-login" onclick="switchTab('login')">Login</button>
+      <button class="tab" id="tab-signup" onclick="switchTab('signup')">Sign up</button>
     </div>
 
-    <script>
-        let currentTab = 'login';
-        
-        function switchTab(tab) {
-            currentTab = tab;
-            
-            // Update tab buttons
-            document.querySelectorAll('.auth-tab').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            
-            // Update forms
-            if (tab === 'login') {
-                document.getElementById('loginForm').style.display = 'block';
-                document.getElementById('signupForm').style.display = 'none';
+    <!-- LOGIN -->
+    <div id="panel-login">
+      <label for="loginHash">Hash code</label>
+      <input id="loginHash" type="text" maxlength="12" placeholder="Enter 12-char hash code (no @)" autocomplete="off">
+
+      <button class="primary" id="loginBtn" onclick="doLogin()">Login</button>
+
+      <div class="small">Don't have a code? Create an account using Sign up tab and copy the code shown.</div>
+    </div>
+
+    <!-- SIGNUP -->
+    <div id="panel-signup" style="display:none">
+      <label for="signupName">Your name</label>
+      <input id="signupName" type="text" placeholder="Full name">
+
+      <button class="primary" id="signupBtn" onclick="doSignup()">Create account</button>
+
+      <div id="signupResult" class="hash-box" style="display:none"></div>
+      <div class="small">Save your hash code — you will need it to login.</div>
+    </div>
+
+    <hr style="border:none;border-top:1px solid rgba(64,224,208,.06);margin:18px 0">
+
+    <!-- COUPON (works without login too; server saves in session) -->
+    <label for="coupon">Coupon / UTR (for unlimited or deposit)</label>
+    <input id="coupon" type="text" placeholder="Enter coupon (e.g. SBSIMPLE00) or UTR">
+
+    <label for="couponAmount" style="margin-top:6px">If depositing by UTR, select amount</label>
+    <input id="couponAmount" type="number" placeholder="Amount (60,90,120,900,1800)">
+
+    <button class="ghost" onclick="applyCoupon()">Apply coupon / deposit</button>
+
+    <div id="msg" class="msg"></div>
+
+    <div style="margin-top:14px;text-align:center" class="small">
+      Need help? Contact <a href="https://t.me/hackingteamx" target="_blank" style="color:#40e0d0;text-decoration:none">t.me/hackingteamx</a>
+    </div>
+  </div>
+
+<script>
+  function switchTab(tab){
+    document.getElementById('tab-login').classList.remove('active');
+    document.getElementById('tab-signup').classList.remove('active');
+    document.getElementById('panel-login').style.display = 'none';
+    document.getElementById('panel-signup').style.display = 'none';
+
+    if(tab === 'login'){
+      document.getElementById('tab-login').classList.add('active');
+      document.getElementById('panel-login').style.display = 'block';
+    } else {
+      document.getElementById('tab-signup').classList.add('active');
+      document.getElementById('panel-signup').style.display = 'block';
+    }
+    hideMsg();
+  }
+
+  function showMsg(text,type='error'){
+    const el = document.getElementById('msg');
+    el.className = 'msg ' + (type==='success' ? 'success' : 'error');
+    el.style.display = 'block';
+    el.textContent = text;
+  }
+  function hideMsg(){ const el=document.getElementById('msg'); el.style.display='none' }
+
+  async function doSignup(){
+    hideMsg();
+    const name = document.getElementById('signupName').value.trim();
+    if(!name || name.length < 2){ showMsg('Enter full name (min 2 chars)'); return; }
+    const btn = document.getElementById('signupBtn'); btn.disabled=true; btn.textContent='Creating...';
+    try{
+      const res = await fetch('/signup', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({name})});
+      const j = await res.json();
+      if(j.success){
+        const box = document.getElementById('signupResult');
+        box.style.display='block';
+        box.textContent = 'Your hash code: ' + j.hash_code + '\n\nName: ' + j.name;
+        showMsg('Account created. Save your hash code!', 'success');
+        // auto-switch to login tab so user can paste code
+        switchTab('login');
+      } else {
+        showMsg(j.error || 'Signup failed');
+      }
+    }catch(e){
+      console.error(e); showMsg('Network error');
+    } finally { btn.disabled=false; btn.textContent='Create account' }
+  }
+
+  async function doLogin(){
+    hideMsg();
+    const code = document.getElementById('loginHash').value.trim();
+    if(!code || code.length < 4){ showMsg('Enter your hash code'); return; }
+    const btn = document.getElementById('loginBtn'); btn.disabled=true; btn.textContent='Logging in...';
+    try{
+      const res = await fetch('/login', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({hash_code: code})});
+      const j = await res.json();
+      if(j.success){
+        showMsg(j.message || 'Welcome', 'success');
+        // redirect to dashboard
+        setTimeout(()=> window.location.href = '/dashboard', 700);
+      } else {
+        showMsg(j.error || 'Login failed');
+      }
+    }catch(e){ console.error(e); showMsg('Network error') }
+    finally { btn.disabled=false; btn.textContent='Login' }
+  }
+
+  async function applyCoupon(){
+    hideMsg();
+    const coupon = document.getElementById('coupon').value.trim();
+    const amount = parseInt(document.getElementById('couponAmount').value) || 0;
+    if(!coupon){ showMsg('Enter coupon or UTR'); return; }
+    const body = { coupon: coupon, utr: coupon, amount: amount };
+    try{
+      const res = await fetch('/apply-coupon', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({coupon: coupon})});
+      const j = await res.json();
+      // apply-coupon endpoint only returns unlimited success or invalid
+      if(j.success){
+        showMsg(j.message || 'Coupon applied', 'success');
+        // If user is already logged in, reload to reflect unlimited state on dashboard
+        setTimeout(()=> { location.reload(); }, 800);
+      } else {
+        // fallback to deposit route (UTR deposit does different checks)
+        // call deposit if user provided amount
+        if(amount > 0){
+          try{
+            const r2 = await fetch('/deposit', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({utr: coupon, amount: amount})});
+            const j2 = await r2.json();
+            if(j2.success){
+              showMsg(j2.message || 'Balance added', 'success');
+              setTimeout(()=> location.reload(), 900);
             } else {
-                document.getElementById('loginForm').style.display = 'none';
-                document.getElementById('signupForm').style.display = 'block';
+              showMsg(j2.error || 'Invalid UTR or coupon');
             }
-            
-            hideMessages();
-            hideHashCodeDisplay();
+          }catch(e){ console.error(e); showMsg('Network error during deposit') }
+        } else {
+          showMsg(j.error || 'Invalid coupon');
         }
-
-        async function signup() {
-            const name = document.getElementById('signupName').value.trim();
-            const button = document.querySelector('#signupForm .auth-button');
-            const spinner = document.getElementById('signupSpinner');
-            const buttonText = document.getElementById('signupButtonText');
-            
-            if (!name || name.length < 2) {
-                showError('Please enter your full name (at least 2 characters)');
-                return;
-            }
-            
-            // Show loading state
-            button.disabled = true;
-            spinner.style.display = 'inline-block';
-            buttonText.textContent = 'Creating Account...';
-            hideMessages();
-            
-            try {
-                const response = await fetch('/signup', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ name: name })
-                });
-                
-                const data = await response.json();
-                
-                if (data.success) {
-                    showHashCode(data.hash_code, data.name);
-                } else {
-                    showError(data.error || 'Registration failed');
-                }
-            } catch (error) {
-                console.error('Signup error:', error);
-                showError('Network error. Please try again.');
-            } finally {
-                button.disabled = false;
-                spinner.style.display = 'none';
-                buttonText.textContent = 'Create Account';
-            }
-        }
-
-        async function login() {
-            const hashCode = document.getElementById('loginHashCode').value.trim();
-            const button = document.querySelector('#loginForm .auth-button');
-            const spinner = document.getElementById('loginSpinner');
-            const buttonText = document.getElementById('loginButtonText');
-            
-            if (!hashCode) {
-                showError('Please enter your hash code');
-                return;
-            }
-            
-            if (hashCode.length !== 12) {
-                showError('Hash code must be exactly 12 characters');
-                return;
-            }
-            
-            // Show loading state
-            button.disabled = true;
-            spinner.style.display = 'inline-block';
-            buttonText.textContent = 'Logging in...';
-            hideMessages();
-            
-            try {
-                const response = await fetch('/login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ hash_code: hashCode })
-                });
-                
-                const data = await response.json();
-                
-                if (data.success) {
-                    showSuccess(data.message + ' Redirecting...');
-                    buttonText.textContent = 'Success!';
-                    
-                    // Redirect after short delay
-                    setTimeout(() => {
-                        window.location.href = '/';
-                    }, 1500);
-                } else {
-                    showError(data.error || 'Login failed');
-                }
-            } catch (error) {
-                console.error('Login error:', error);
-                showError('Network error. Please try again.');
-            } finally {
-                if (!document.getElementById('successMessage').style.display !== 'none') {
-                    button.disabled = false;
-                    spinner.style.display = 'none';
-                    buttonText.textContent = 'Login';
-                }
-            }
-        }
-        
-        function showHashCode(hashCode, name) {
-            document.getElementById('hashCodeValue').textContent = hashCode;
-            document.getElementById('hashCodeDisplay').style.display = 'block';
-            document.getElementById('signupForm').style.display = 'none';
-            showSuccess(`Welcome ${name}! Your account has been created.`);
-        }
-        
-        function hideHashCodeDisplay() {
-            document.getElementById('hashCodeDisplay').style.display = 'none';
-        }
-        
-        function proceedToLogin() {
-            const hashCode = document.getElementById('hashCodeValue').textContent;
-            hideHashCodeDisplay();
-            switchTab('login');
-            document.getElementById('loginHashCode').value = hashCode;
-            
-            // Auto-focus the tab button for login
-            document.querySelector('.auth-tab').click();
-        }
-        
-        function showError(message) {
-            const errorDiv = document.getElementById('errorMessage');
-            errorDiv.textContent = '❌ ' + message;
-            errorDiv.style.display = 'block';
-            
-            // Add shake animation
-            errorDiv.style.animation = 'none';
-            setTimeout(() => {
-                errorDiv.style.animation = 'errorShake 0.5s ease-in-out';
-            }, 10);
-        }
-        
-        function showSuccess(message) {
-            const successDiv = document.getElementById('successMessage');
-            successDiv.textContent = '✅ ' + message;
-            successDiv.style.display = 'block';
-        }
-        
-        function hideMessages() {
-            document.getElementById('errorMessage').style.display = 'none';
-            document.getElementById('successMessage').style.display = 'none';
-        }
-
-        // Allow alphanumeric input for hash code
-        document.getElementById('loginHashCode').addEventListener('input', function(e) {
-            e.target.value = e.target.value.replace(/[^A-Z0-9]/g, '').toUpperCase();
-            hideMessages();
-        });
-
-        // Enter key support
-        document.getElementById('loginHashCode').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                login();
-            }
-        });
-
-        document.getElementById('signupName').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                signup();
-            }
-        });
-    </script>
+      }
+    }catch(e){
+      console.error(e);
+      showMsg('Network error while applying coupon');
+    }
+  }
+</script>
 </body>
 </html>
