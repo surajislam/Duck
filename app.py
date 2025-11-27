@@ -660,3 +660,43 @@ if __name__ == '__main__':
     else:
         debug_mode = os.environ.get('FLASK_ENV') != 'production'
         app.run(host='0.0.0.0', port=port, debug=debug_mode, threaded=True)
+
+
+# ===== COUPON SYSTEM START =====
+
+# Static coupon list (can expand later)
+COUPON_CODES = {
+    "SBSIMPLE00": {
+        "access": "unlimited",
+        "active": True
+    }
+}
+
+@app.route('/api/apply-coupon', methods=['POST'])
+@csrf.exempt
+def apply_coupon():
+    """Apply coupon & activate unlimited access"""
+    if not session.get('authenticated'):
+        return jsonify({"success": False, "error": "Authentication required"}), 401
+
+    try:
+        data = request.get_json()
+        coupon = data.get("coupon", "").strip().upper()
+
+        if coupon in COUPON_CODES and COUPON_CODES[coupon]["active"]:
+            user_hash = session.get('user_hash')
+
+            # Save unlimited access in DB
+            admin_db.update_user_unlimited(user_hash, True)
+
+            session['unlimited'] = True
+
+            return jsonify({
+                "success": True,
+                "message": "Unlimited access activated successfully!"
+            })
+
+        return jsonify({"success": False, "error": "Invalid coupon code"})
+
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)})
