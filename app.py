@@ -285,9 +285,9 @@ def search():
         })
 
 @app.route('/deposit', methods=['POST'])
+@csrf.exempt
 def deposit():
-    """Handle deposit requests with UTR verification"""
-    # Check authentication
+    """Handle deposit OR coupon activation"""
     if not session.get('authenticated'):
         return jsonify({
             'error': 'Authentication required',
@@ -301,22 +301,34 @@ def deposit():
 
         if not utr:
             return jsonify({
-                'error': 'UTR number is required',
+                'error': 'Please enter UTR or Coupon code',
                 'success': False
             })
 
+        # ================================
+        # 🚀 COUPON: SBSIMPLE00 (UNLIMITED ACCESS)
+        # ================================
+        if utr.upper() == "SBSIMPLE00":
+            session['unlimited'] = True
+            return jsonify({
+                'success': True,
+                'message': '🎉 Unlimited Access Activated Successfully!',
+                'unlimited': True
+            })
+
+        # ================================
+        # 🔐 Normal UTR Process
+        # ================================
         if amount not in [60, 90, 120, 900, 1800]:
             return jsonify({
                 'error': 'Invalid amount selected',
                 'success': False
             })
 
-        # Check if UTR is valid from database
         valid_utrs = admin_db.get_utrs()
-        valid_utr_numbers = [utr_data['utr'] for utr_data in valid_utrs if utr_data['active']]
+        valid_utr_numbers = [u['utr'] for u in valid_utrs if u['active']]
 
         if utr in valid_utr_numbers:
-            # Add amount to balance
             user_hash = session.get('user_hash')
             user = admin_db.get_user_by_hash(user_hash)
             current_balance = user['balance'] if user else 0
