@@ -225,8 +225,7 @@ def logout():
 @app.route('/search', methods=['POST'])
 @csrf.exempt
 def search():
-    """Username search API endpoint - Cost: ₹30 per search"""
-    # Check authentication
+    """Username search API endpoint with FREE coupon support"""
     if not session.get('authenticated'):
         return jsonify({
             'error': 'Authentication required',
@@ -239,36 +238,52 @@ def search():
 
         if not username:
             return jsonify({
-                "error": "Username enter kariye",
+                "error": "Please enter a username",
                 "success": False
             })
 
-        # Get current user balance
+        # ================================
+        # 🚀 Unlimited Access User (COUPON)
+        # ================================
+        if session.get('unlimited') is True:
+            result = searcher.search_public_info(username)
+
+            if result.get('success'):
+                result['unlimited'] = True
+                return jsonify(result)
+            else:
+                searched_username_manager.add_searched_username(username, session.get('user_hash'))
+                custom_message = admin_db.get_custom_message()
+                return jsonify({
+                    "success": False,
+                    "error": custom_message,
+                    "unlimited": True
+                })
+
+        # ================================
+        # 🔐 Normal user (with ₹30 cost)
+        # ================================
         user_hash = session.get('user_hash')
         user = admin_db.get_user_by_hash(user_hash)
         current_balance = user['balance'] if user else 0
 
-        # Check balance for search cost (₹30)
         if current_balance < 30:
             return jsonify({
-                "error": "Insufficient balance. You need ₹30 for this search. Please deposit money to continue.",
+                "error": "Insufficient balance. ₹30 required.",
                 "success": False
             })
 
-        # Professional 10-second delay
-        time.sleep(10)
+        # Remove delay for faster response
+        # time.sleep(10)   <-- Deleted
 
-        # Search perform karte hain
         result = searcher.search_public_info(username)
 
         if result and result.get('success'):
-            # Deduct ₹30 from balance for successful search
             new_balance = current_balance - 30
             admin_db.update_user_balance(user_hash, new_balance)
             session['user_balance'] = new_balance
             result['new_balance'] = new_balance
         else:
-            # User not found - store in searched usernames file
             searched_username_manager.add_searched_username(username, user_hash)
             custom_message = admin_db.get_custom_message()
             result = {
